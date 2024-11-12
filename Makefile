@@ -83,6 +83,9 @@ copier_update:  ### Run copier to update project from template
 	read -p "Enter template name: " TEMPLATE; \
 	copier update --answers-file .copier/.copier-answers.$$TEMPLATE.yml --skip-answered
 
+run:  ### Run the main script
+	python src/driver.py
+
 ### Help
 help: ## Show this help
 	@sed -Ene 's/^([^ 	]+)( [^ 	]+)*:.*##/\1:\t/p' $(MAKEFILE_LIST) | column -t -s $$'\t'

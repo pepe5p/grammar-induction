@@ -1,0 +1,10 @@
+digraph learned_dfa {
+s0 [label="s0", shape=doublecircle];
+s1 [label="s1"];
+s0 -> s0 [label="b"];
+s0 -> s1 [label="a"];
+s1 -> s0 [label="a"];
+s1 -> s1 [label="b"];
+__start0 [shape=none, label=""];
+__start0 -> s0 [label=""];
+}

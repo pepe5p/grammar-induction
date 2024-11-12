@@ -7,12 +7,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.13"
+aalpy = "^1.4.2"
 automata-lib = "^8.3.0"
 coloraide = "^3.3.1"
-dfa = "^4.7.1"
-lstar = "^1.0.2"
 pygraphviz = "^1.13"
-pylstar = "^0.1.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
