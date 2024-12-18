@@ -73,10 +73,11 @@ def reduce_mca(mca_states: list[str], mca: DFA, partition: tuple[int, ...]) -> D
             states=new_states,
             input_symbols=mca.input_symbols,
             transitions=new_transitions,
-            initial_state=mca.initial_state,
+            initial_state=mapping[mca.initial_state],
             final_states=new_final_states,
         )
     except InvalidStateError as e:
+        print(f"States: {mca_states}")
         print(f"Partition: {partition}")
         print(f"Mapping: {mapping}")
         print(f"New States: {new_states}")

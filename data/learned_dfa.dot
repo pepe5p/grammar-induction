@@ -1,16 +1,28 @@
 digraph learned_dfa {
-initial_state [label="initial_state"];
+empty [label="empty", shape=doublecircle];
 aab [label="aab", shape=doublecircle];
-abaaa [label="abaaa", shape=doublecircle];
-initial_state -> aab [label="a"];
-initial_state -> initial_state [label="b"];
-initial_state -> initial_state [label="c"];
+abb [label="abb", shape=doublecircle];
+aa [label="aa", shape=doublecircle];
+b [label="b"];
+ba [label="ba", shape=doublecircle];
+ab [label="ab"];
+abaa [label="abaa"];
+empty -> ba [label="a"];
+empty -> abb [label="b"];
 aab -> aab [label="b"];
 aab -> aab [label="a"];
-aab -> aab [label="c"];
-abaaa -> abaaa [label="b"];
-abaaa -> aab [label="a"];
-abaaa -> abaaa [label="c"];
+abb -> ba [label="b"];
+abb -> abaa [label="a"];
+aa -> aa [label="b"];
+aa -> b [label="a"];
+b -> ba [label="a"];
+b -> b [label="b"];
+ba -> aa [label="a"];
+ba -> abaa [label="b"];
+ab -> ba [label="a"];
+ab -> ab [label="b"];
+abaa -> aa [label="a"];
+abaa -> abb [label="b"];
 __start0 [shape=none, label=""];
-__start0 -> initial_state [label=""];
+__start0 -> empty [label=""];
 }

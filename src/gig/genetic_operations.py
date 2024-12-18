@@ -1,4 +1,5 @@
 import random
+from itertools import combinations
 
 import numpy as np
 import pygad
@@ -8,17 +9,36 @@ from numpy.typing import NDArray
 def initialize_population(num_states: int, population_size: int) -> NDArray[np.int_]:
     population = np.zeros((population_size, num_states), dtype=np.int_)
 
-    for i in range(population_size):
+    # Step 1: First chromosome corresponds to the identity partition (extended automaton)
+    population[0] = np.arange(num_states, dtype=np.int_)  # Identity partition
+
+    # Step 2: Up to 50% of the population are partitions with N-1 elements
+    num_fixed_partitions = min(population_size // 2, int(num_states * (num_states - 1) / 2))
+    fixed_partitions = []
+
+    # Generate partitions with N-1 elements (merge exactly two states)
+    for i, (state1, state2) in enumerate(combinations(range(num_states), 2)):
+        if i >= num_fixed_partitions:
+            break
+        partition = np.arange(num_states, dtype=np.int_)  # Start with identity partition
+        partition[state2] = partition[state1]  # Merge state2 into state1's group
+        fixed_partitions.append(canonicalize_partition(partition))
+
+    # Assign these fixed partitions to the initial part of the population
+    for i, partition in enumerate(fixed_partitions, start=1):  # Start from index 1
+        population[i] = partition
+
+    # Step 3: The remaining part of the population is randomly generated
+    for i in range(len(fixed_partitions) + 1, population_size):
         partition = np.array([random.randint(0, num_states - 1) for _ in range(num_states)], dtype=np.int_)
-        canonical_partition = canonicalize_partition(partition)
-        population[i] = canonical_partition
+        population[i] = canonicalize_partition(partition)
 
     return population
 
 
 def mutation_func(offspring: NDArray[np.int_], _ga_instance: pygad.GA) -> NDArray[np.int_]:
     population_size, num_states = offspring.shape
-    num_to_mutate = max(1, int(0.1 * population_size))
+    num_to_mutate = max(1, int(0.01 * population_size))
 
     indices_to_mutate = random.sample(range(population_size), num_to_mutate)
     mutated_offspring = offspring.copy()
