@@ -80,11 +80,30 @@ copier_update:  ### Run copier to update project from template
 	@TEMPLATES=$$(ls -a .copier | grep -i ".copier-answers" | sed -e 's/\.copier-answers\.//' -e 's/\.yml//'); \
 	echo "Available templates:"; \
 	echo "$$TEMPLATES" | sed 's/^/* /'; \
-	read -p "Enter template name: " TEMPLATE; \
-	copier update --answers-file .copier/.copier-answers.$$TEMPLATE.yml --skip-answered
+	read -p "Enter the template name: " TEMPLATE; \
+	if echo "$$TEMPLATES" | grep -q "^$$TEMPLATE$$"; then \
+		copier update --answers-file .copier/.copier-answers.$$TEMPLATE.yml --skip-answered; \
+	else \
+		echo "Error: Template '$$TEMPLATE' not found."; \
+		exit 1; \
+	fi
 
-run:  ### Run the main script
-	python src/driver.py
+run:  ### Run the selected driver script (pass DRIVER=name as argument)
+	@DRIVERS=$$(ls src/*_driver.py | xargs -n 1 basename | sed 's/_driver.py//'); \
+	if [ -z "$(DRIVER)" ]; then \
+		echo "Available drivers:"; \
+		echo "$$DRIVERS" | sed 's/^/* /'; \
+		read -p "Enter the driver name: " USER_DRIVER; \
+	else \
+		USER_DRIVER="$(DRIVER)"; \
+	fi; \
+	if echo "$$DRIVERS" | grep -q "^$$USER_DRIVER$$"; then \
+		python src/$$USER_DRIVER"_driver.py"; \
+	else \
+		echo "Error: Driver '$$USER_DRIVER' not found."; \
+		exit 1; \
+	fi
+
 
 ### Help
 help: ## Show this help

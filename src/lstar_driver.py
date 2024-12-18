@@ -10,10 +10,10 @@ def run_lstar() -> None:
     #     'q3': (False, {'a': 'q2', 'b': 'q1'})
     # }
     state_setup = {
-        'q0': (True, {'a': 'q1', 'b': 'q2'}),
-        'q1': (True, {'a': 'q0', 'b': 'q3'}),
-        'q2': (True, {'a': 'q3', 'b': 'q0'}),
-        'q3': (False, {'a': 'q2', 'b': 'q1'})
+        "q0": (True, {"a": "q1", "b": "q2"}),
+        "q1": (True, {"a": "q0", "b": "q3"}),
+        "q2": (True, {"a": "q3", "b": "q0"}),
+        "q3": (False, {"a": "q2", "b": "q1"}),
     }
     dfa = Dfa.from_state_setup(state_setup=state_setup)
 
@@ -40,8 +40,7 @@ def run_lstar() -> None:
     print(learned_dfa)
     learned_dfa.visualize(path="data/learned_dfa", file_type="png")
     learned_dfa.save(file_path="data/learned_dfa")
-    
-    
+
+
 if __name__ == "__main__":
     run_lstar()
-    
