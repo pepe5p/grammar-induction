@@ -1,0 +1,13 @@
+digraph learned_dfa {
+q0 [label="S"];
+q1 [label="H"];
+q2 [label="T"];
+q0 -> q2 [label=0.5003043022335498];
+q0 -> q1 [label=0.4996956977664502];
+q1 -> q2 [label=0.4991480356725709];
+q1 -> q1 [label=0.5008519643274292];
+q2 -> q1 [label=0.4981566757119754];
+q2 -> q2 [label=0.5018433242880246];
+__start0 [shape=none, label=""];
+__start0 -> q0 [label=""];
+}

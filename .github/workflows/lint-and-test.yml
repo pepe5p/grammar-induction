@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [save_pta]
+    branches: [save_rpni_run_example]
   pull_request:
 
 jobs:

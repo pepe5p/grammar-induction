@@ -1,4 +1,5 @@
 from itertools import product
+from random import randint
 
 
 def even_number_of_as() -> tuple[list[str], list[str]]:
@@ -53,3 +54,14 @@ def one_is_third_from_end() -> tuple[list[str], list[str]]:
         positive_examples.append(f"{bin_str}111")
 
     return positive_examples, negative_examples
+
+
+def coin_toss(n: int = 1000, min_len: int = 5, max_len: int = 12) -> list[str]:
+    data = []
+    for _ in range(n):
+        length = randint(min_len, max_len)
+        word = ""
+        for _ in range(length):
+            word += "H" if randint(0, 1) == 0 else "T"
+            data.append(word)
+    return data
