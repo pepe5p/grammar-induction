@@ -1,13 +1,15 @@
 digraph learned_dfa {
-q0 [label="S"];
-q1 [label="H"];
-q2 [label="T"];
-q0 -> q1 [label=0.625];
-q0 -> q2 [label=0.375];
-q1 -> q1 [label=0.75];
-q1 -> q2 [label=0.25];
-q2 -> q1 [label=0.5];
-q2 -> q2 [label=0.5];
+s0 [label="s0"];
+s1 [label="s1", shape=doublecircle];
+s2 [label="s2"];
+s3 [label="s3", shape=doublecircle];
+s0 -> s1 [label="a"];
+s0 -> s2 [label="b"];
+s1 -> s3 [label="b"];
+s1 -> s2 [label="a"];
+s2 -> s2 [label="b"];
+s2 -> s2 [label="a"];
+s3 -> s1 [label="a"];
 __start0 [shape=none, label=""];
-__start0 -> q0 [label=""];
+__start0 -> s0 [label=""];
 }

@@ -1,9 +1,8 @@
-from math import sqrt, log
+from math import log, sqrt
 
 import numpy as np
-from aalpy.learning_algs.stochastic_passive.CompatibilityChecker import HoeffdingCompatibility
-
 import pydot
+from aalpy.learning_algs.stochastic_passive.CompatibilityChecker import HoeffdingCompatibility
 
 
 def save_rpni_run_example() -> None:
@@ -130,7 +129,7 @@ def merge_states(graph: pydot.Dot, state1: str, state2: str) -> pydot.Dot:
 def save_alergia_run_example() -> None:
     # [H, H, T, HH, HT, TH, TT, HHH]
     path = "data/run_example/alergia/{}.png"
-    
+
     graph = create_empty_pta()
     graph.add_node(pydot.Node("q1", label="q1\n[8, 0]"))
     graph.add_node(pydot.Node("q2", label="q2\n[5, 2]"))
@@ -147,8 +146,8 @@ def save_alergia_run_example() -> None:
     graph.add_edge(pydot.Edge("q3", "q6", label="H\n[1]"))
     graph.add_edge(pydot.Edge("q3", "q7", label="T\n[1]"))
     graph.add_edge(pydot.Edge("q4", "q8", label="H\n[1]"))
-    graph.write(path.format("0"), format='png')
-    
+    graph.write(path.format("0"), format="png")
+
     graph = create_empty_pta()
     graph.add_node(pydot.Node("q1", label="q1\n[8, 0]"))
     graph.add_node(pydot.Node("q2", label="q2\n[8, 3]"))  # Scalony stan q2 + q3
@@ -160,8 +159,8 @@ def save_alergia_run_example() -> None:
     graph.add_edge(pydot.Edge("q2", "q4", label="H[3]"))  # q2 -> q4 po H
     graph.add_edge(pydot.Edge("q2", "q5", label="T[2]"))  # q2 -> q5 po T
     graph.add_edge(pydot.Edge("q4", "q8", label="H[1]"))  # q4 -> q8 po H
-    graph.write(path.format("1"), format='png')
-    
+    graph.write(path.format("1"), format="png")
+
     graph = create_empty_pta()
     graph.add_node(pydot.Node("q1", label="q1\n[8, 0]"))
     graph.add_node(pydot.Node("q2", label="q2\n[8, 3]"))  # Scalony stan q2 + q3
@@ -172,7 +171,7 @@ def save_alergia_run_example() -> None:
     graph.add_edge(pydot.Edge("q2", "q4", label="H[3]"))  # q2 -> q4 po H
     graph.add_edge(pydot.Edge("q2", "q5", label="T[2]"))  # q2 -> q5 po T
     graph.add_edge(pydot.Edge("q4", "q4", label="H[1]"))  # q4 -> q4 po H
-    graph.write(path.format("2"), format='png')
+    graph.write(path.format("2"), format="png")
 
     graph = create_empty_pta()
     graph.add_node(pydot.Node("q1", label="q1\n[8, 0]"))
@@ -183,8 +182,8 @@ def save_alergia_run_example() -> None:
     graph.add_edge(pydot.Edge("q2", "q4", label="H[3]"))  # q2 -> q4 po H
     graph.add_edge(pydot.Edge("q2", "q4", label="T[2]"))  # q2 -> q4 po T
     graph.add_edge(pydot.Edge("q4", "q4", label="H[1]"))  # q4 -> q4 po H
-    graph.write(path.format("3"), format='png')
-    
+    graph.write(path.format("3"), format="png")
+
     graph = create_empty_pta()
     graph.add_node(pydot.Node("q1", label="0"))
     graph.add_node(pydot.Node("q2", label="0.375"))  # Scalony stan q2 + q3
@@ -194,8 +193,8 @@ def save_alergia_run_example() -> None:
     graph.add_edge(pydot.Edge("q2", "q4", label="H\n0.375"))  # q2 -> q4 po H
     graph.add_edge(pydot.Edge("q2", "q4", label="T\n0.25"))  # q2 -> q4 po T
     graph.add_edge(pydot.Edge("q4", "q4", label="H\n0.2"))  # q4 -> q4 po H
-    graph.write(path.format("4"), format='png')
-    
+    graph.write(path.format("4"), format="png")
+
 
 def create_empty_pta() -> pydot.Dot:
     graph = pydot.Dot("PTA", graph_type="digraph", rankdir="LR")
@@ -218,19 +217,19 @@ def print_alergia() -> None:
     hc = HoeffdingCompatibility(eps=1.65)
     matrix = [[hc.hoeffding_bound(a=a, b=b) for a in states] for b in states]
     print((np.matrix(matrix)).astype(int))
-    
+
     q2_q3 = {"$": 3, "H": 3, "T": 2}
     q4_q6 = {"$": 2, "H": 1, "T": 0}
     q5_q7 = {"$": 2, "H": 0, "T": 0}
     states = [q1, q2_q3, q4_q6, q5_q7, q8]
     matrix = [[hc.hoeffding_bound(a=a, b=b) for a in states] for b in states]
     print((np.matrix(matrix)).astype(int))
-    
+
     q4_q6_q8 = {"$": 2, "H": 1, "T": 0}
     states = [q1, q2_q3, q4_q6_q8, q5_q7]
     matrix = [[hc.hoeffding_bound(a=a, b=b) for a in states] for b in states]
     print((np.matrix(matrix)).astype(int))
-    
+
     q4_q5_q6_q7_q8 = {"$": 4, "H": 1, "T": 0}
     states = [q1, q2_q3, q4_q5_q6_q7_q8]
     matrix = [[hc.hoeffding_bound(a=a, b=b) for a in states] for b in states]
@@ -243,7 +242,7 @@ if __name__ == "__main__":
     eps = 1.65
     bound = (sqrt(1 / n1) + sqrt(1 / n2)) * sqrt(0.5 * log(2 / eps))
     print(bound)
-    
+
     # save_rpni_run_example()
     # save_alergia_run_example()
     # print_alergia()
