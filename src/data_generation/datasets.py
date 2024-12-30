@@ -1,7 +1,8 @@
-from itertools import product, count
+import random
+from itertools import count, product
 from random import randint, Random
 
-from aalpy import AutomatonSUL, Automaton
+from aalpy import Automaton, AutomatonSUL, DeterministicAutomaton, Dfa
 from automata.fa.dfa import DFA
 
 
@@ -109,7 +110,7 @@ def a_and_b_alternately(
         except ValueError:
             continue
         positive_examples.append(seq)
-        
+
     negated_dfa = DFA(
         states={"s1", "s2", "s3"},
         input_symbols={"a", "b"},
@@ -129,7 +130,7 @@ def a_and_b_alternately(
         except ValueError:
             continue
         negative_examples.append(seq)
-        
+
     return positive_examples, negative_examples
 
 
@@ -157,7 +158,7 @@ def generate_data_from_mc_sul(
             o = sul.step()
             seq.append(o)
         sul.post()
-        data.append(''.join(seq))
+        data.append("".join(seq))
     return data
 
 
@@ -174,10 +175,39 @@ def add_noise(
 
     if rnd is None:
         rnd = Random(42)
-    
+
     n = int(len(positive) * noise_percentage)
     for _ in range(n):
         idx = rnd.randint(0, len(positive) - 1)
         positive[idx] = negative[rnd.randint(0, len(negative) - 1)]
-    
+
     return positive
+
+
+def crop_data(
+    data: tuple[list[str], list[str]],
+    size: int,
+    rnd: random.Random,
+) -> tuple[list[str], list[str]]:
+    original_positive, original_negative = data
+    positive = rnd.sample(original_positive, size)
+    negative = rnd.sample(original_negative, size)
+    return positive, negative
+
+
+def some_dfa_example() -> DeterministicAutomaton:
+    # state_setup = {
+    #     'q0': (True, {'a': 'q1', 'b': 'q2'}),
+    #     'q1': (False, {'a': 'q0', 'b': 'q3'}),
+    #     'q2': (False, {'a': 'q3', 'b': 'q0'}),
+    #     'q3': (False, {'a': 'q2', 'b': 'q1'})
+    # }
+    state_setup = {
+        "q0": (True, {"a": "q1", "b": "q2"}),
+        "q1": (True, {"a": "q0", "b": "q3"}),
+        "q2": (True, {"a": "q3", "b": "q0"}),
+        "q3": (False, {"a": "q2", "b": "q2"}),
+    }
+    dfa = Dfa.from_state_setup(state_setup=state_setup)
+    assert isinstance(dfa, DeterministicAutomaton)
+    return dfa

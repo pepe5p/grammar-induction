@@ -1,19 +1,33 @@
 import os
 import pickle
 
-from aalpy import run_RPNI, Dfa
+from aalpy import Dfa, run_RPNI
 
 from data_generation import datasets
 
 
 def run_rpni() -> None:
     # positive, negative = datasets.at_least_one_a()
-    
+
     experiment_catalogue = "data/a_and_b_alternately"
 
     data = construct_positive_and_negative_data(
         positive_examples=["a", "aba", "ab", "abab", "ababab", "abababab", "ababa"],
-        negative_examples=["", "b", "baab", "aabbbb", "aaab", "aaaabab", "bbab", "aaaa", "aa", "bb", "ba", "bab", "bababab"],
+        negative_examples=[
+            "",
+            "b",
+            "baab",
+            "aabbbb",
+            "aaab",
+            "aaaabab",
+            "bbab",
+            "aaaa",
+            "aa",
+            "bb",
+            "ba",
+            "bab",
+            "bababab",
+        ],
     )
     model: Dfa | None = run_RPNI(data=data, algorithm="classic", automaton_type="dfa")
     if model is None:

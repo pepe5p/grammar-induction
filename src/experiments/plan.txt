@@ -1,26 +1,22 @@
 ALERGIA:
-	1. Odporność na szum w danych.
-	2. Test skuteczności identyfikacji języków stochastycznych.
-	2. Pomiar wydajności względem wielkości danych.
+	1. Odporność na szum w danych. DONE
+	2. prosty przypadek, który pokazałby, że ALERGIA nie nadaje się do modelowania niestochastycznych zależności i lepszym wyborem wtedy są GIG, L* lub RPNI
+	3. Pomiar wydajności względem wielkości danych.
 
 GIG:
-	1. Porównanie z algorytmami bez podejścia genetycznego.
-	2. Test wydajności dla dużych zbiorów danych.
-	2. Ocena wpływu parametrów genetycznych na jakość wyniku.
+	1. Zależność dokładności i szybkości a populacja początkowa.
+	1. Ocena wpływu parametrów genetycznych na jakość wyniku.
+	2. porównanie dokładności RPNI z GIG - spodziewałbym się podobnych rezultatów do tych, które są w tej pracy https://link-1springer-1com-1000048330038.wbg2.bg.agh.edu.pl/chapter/10.1007/3-540-58473-0_152
+	3. Test wydajności dla dużych zbiorów danych.
 
 L*:
 	1. Pomiar liczby zapytań i kontrprzykładów potrzebnych do nauki automatu.
 	2. Wpływ długości słów na konwergencję.
 
 RPNI:
-	1. Skuteczność przy różnych proporcjach pozytywnych i negatywnych przykładów.
-	2. Skalowalność względem wielkości zbioru danych.
+	1. potwierdzenie empiryczne, że złożoność czasowa RPNI nie zależy od alfabetu
+	2. Skuteczność przy różnych proporcjach pozytywnych i negatywnych przykładów.
+	3. Skalowalność względem wielkości zbioru danych.
 
 Porównawczo dla wszystkich algorytmów:
-	2. Porównanie jakości i minimalizacji automatów.
-	2. Analiza złożoności czasowej i przestrzennej.
-
-
-potwierdzenie empiryczne, że złożoność czasowa RPNI nie zależy od alfabetu
-porównanie dokładności RPNI z GIG - spodziewałbym się podobnych rezultatów do tych, które są w tej pracy https://link-1springer-1com-1000048330038.wbg2.bg.agh.edu.pl/chapter/10.1007/3-540-58473-0_152
-prosty przypadek, który pokazałby, że ALERGIA nie nadaje się do modelowania niestochastycznych zależności i lepszym wyborem wtedy są GIG, L* lub RPNI
+	1. Analiza złożoności czasowej i przestrzennej.
