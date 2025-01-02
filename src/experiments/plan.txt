@@ -10,7 +10,7 @@ GIG:
 	3. Test wydajności dla dużych zbiorów danych.
 
 L*:
-	1. Pomiar liczby zapytań i kontrprzykładów potrzebnych do nauki automatu.
+	1. Pomiar liczby zapytań i kontrprzykładów potrzebnych do nauki automatu. DONE
 	2. Wpływ długości słów na konwergencję.
 
 RPNI:
