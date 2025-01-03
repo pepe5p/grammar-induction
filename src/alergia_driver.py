@@ -5,8 +5,10 @@ import random
 from aalpy import MarkovChain, run_Alergia
 from tabulate import tabulate
 
+import data_generation.transformations
 from data_generation import datasets
-from data_generation.datasets import crop_data, measure_a_and_b_alternately_solution_quality
+from data_generation.datasets import measure_a_and_b_alternately_solution_quality
+from data_generation.transformations import crop_data
 
 
 def run_alergia_benchmark() -> None:
@@ -29,7 +31,7 @@ def run_alergia_benchmark() -> None:
         print(f"Running Alergia with noise percentage: {percentage_formatted}")
         case_name = f"learned_mc_{percentage_formatted}"
 
-        data = datasets.add_noise(
+        data = data_generation.transformations.add_noise(
             positive=original_positive,
             negative=original_negative,
             noise_percentage=noise_percentage,

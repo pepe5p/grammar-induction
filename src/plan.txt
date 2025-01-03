@@ -14,7 +14,7 @@ L*:
 	2. Wpływ długości słów na konwergencję.
 
 RPNI:
-	1. potwierdzenie empiryczne, że złożoność czasowa RPNI nie zależy od alfabetu
+	1. potwierdzenie empiryczne, że złożoność czasowa RPNI nie zależy od alfabetu DONE
 	2. Skuteczność przy różnych proporcjach pozytywnych i negatywnych przykładów.
 	3. Skalowalność względem wielkości zbioru danych.
 

@@ -1,6 +1,6 @@
-import random
-from itertools import count, product
-from random import randint, Random
+from itertools import product
+from random import randint
+from typing import Iterable
 
 from aalpy import Automaton, AutomatonSUL, DeterministicAutomaton, Dfa
 from automata.fa.dfa import DFA
@@ -162,39 +162,6 @@ def generate_data_from_mc_sul(
     return data
 
 
-def add_noise(
-    positive: list[str],
-    negative: list[str],
-    noise_percentage: float,
-    rnd: Random | None = None,
-) -> list[str]:
-    """Swaps random noise_percentage of positive examples with negative examples"""
-
-    if noise_percentage < 0 or noise_percentage > 1:
-        raise ValueError("Noise percentage must be between 0 and 1")
-
-    if rnd is None:
-        rnd = Random(42)
-
-    n = int(len(positive) * noise_percentage)
-    for _ in range(n):
-        idx = rnd.randint(0, len(positive) - 1)
-        positive[idx] = negative[rnd.randint(0, len(negative) - 1)]
-
-    return positive
-
-
-def crop_data(
-    data: tuple[list[str], list[str]],
-    size: int,
-    rnd: random.Random,
-) -> tuple[list[str], list[str]]:
-    original_positive, original_negative = data
-    positive = rnd.sample(original_positive, size)
-    negative = rnd.sample(original_negative, size)
-    return positive, negative
-
-
 def some_dfa_example() -> DeterministicAutomaton:
     # state_setup = {
     #     'q0': (True, {'a': 'q1', 'b': 'q2'}),
@@ -211,3 +178,9 @@ def some_dfa_example() -> DeterministicAutomaton:
     dfa = Dfa.from_state_setup(state_setup=state_setup)
     assert isinstance(dfa, DeterministicAutomaton)
     return dfa
+
+
+def save_data_to_file(data: Iterable, file_path: str) -> None:
+    with open(f"data/{file_path}.txt", "w") as f:
+        for example in data:
+            f.write(f"{example}\n")
