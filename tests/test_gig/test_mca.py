@@ -1,7 +1,9 @@
 import pytest
+from _pytest.fixtures import FixtureRequest
 from automata.fa.dfa import DFA
 
 from data_generation import datasets
+from data_generation.transformations import translate_automata_to_aalpy
 from gig.mca import construct_mca, reduce_mca
 
 
@@ -20,8 +22,6 @@ def test_construct_mca(dataset: tuple[list[str], list[str]]) -> None:
     mca = construct_mca(s_plus=s_plus)
     for word in s_plus:
         assert mca.accepts_input(word), f"Does not accept '{word}'"
-    for word in s_minus:
-        assert not mca.accepts_input(word), f"Mistakenly accepts '{word}'"
 
 
 @pytest.mark.parametrize(

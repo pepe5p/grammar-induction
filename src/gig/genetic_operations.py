@@ -6,6 +6,15 @@ import pygad
 from numpy.typing import NDArray
 
 
+def initialize_random_population(num_states: int, population_size: int) -> NDArray[np.int_]:
+    population = np.zeros((population_size, num_states), dtype=np.int_)
+    for i in range(population_size):
+        partition = np.array([random.randint(0, num_states - 1) for _ in range(num_states)], dtype=np.int_)
+        population[i] = canonicalize_partition(partition)
+
+    return population
+
+
 def initialize_population(num_states: int, population_size: int) -> NDArray[np.int_]:
     population = np.zeros((population_size, num_states), dtype=np.int_)
 
@@ -25,12 +34,15 @@ def initialize_population(num_states: int, population_size: int) -> NDArray[np.i
         fixed_partitions.append(canonicalize_partition(partition))
 
     # Assign these fixed partitions to the initial part of the population
-    for i, partition in enumerate(fixed_partitions, start=1):  # Start from index 1
+    for i, partition in enumerate(fixed_partitions, start=1):  # type: ignore[assignment]
         population[i] = partition
 
     # Step 3: The remaining part of the population is randomly generated
     for i in range(len(fixed_partitions) + 1, population_size):
-        partition = np.array([random.randint(0, num_states - 1) for _ in range(num_states)], dtype=np.int_)
+        partition = np.array(  # type: ignore[assignment]
+            [random.randint(0, num_states - 1) for _ in range(num_states)],
+            dtype=np.int_,
+        )
         population[i] = canonicalize_partition(partition)
 
     return population

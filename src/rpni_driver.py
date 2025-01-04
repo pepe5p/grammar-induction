@@ -1,47 +1,16 @@
-import random
 from collections import deque
 from time import perf_counter
+from typing import Any
 
 from aalpy import Dfa
 from aalpy.learning_algs.deterministic_passive.RPNI import RPNI
 from aalpy.learning_algs.deterministic_passive.rpni_helper_functions import createPTA
 from tabulate import tabulate
 
-
-def create_data(alphabet_size: int) -> list[tuple[tuple[str, ...], bool]]:
-    alphabet = list(range(0, alphabet_size))
-    alphabet_without_zero = alphabet[1:]
-    data = [((None,), False), ((0,), True)]
-
-    for char in alphabet:
-        data.append(((0, char), True))
-
-    for char in alphabet_without_zero:
-        data.append(((char,), False))
-        for char2 in alphabet:
-            data.append(((char, char2), False))
-
-    m = {
-        2: 17,
-        4: 12,
-        8: 11,
-        16: 10,
-        32: 9,
-        64: 5,
-    }
-
-    for word_length in range(3, m[alphabet_size]):
-        for i in range(100):
-            pos_example = 0, *random.choices(alphabet, k=word_length - 1)
-            data.append((pos_example, True))
-
-            neg_example = random.choice(alphabet_without_zero), *random.choices(alphabet, k=word_length - 1)
-            data.append((neg_example, False))
-
-    return data
+from data_generation.datasets import create_rpni_benchmark_data
 
 
-def count_pta_states(data: list[tuple[tuple[str, ...], bool]]) -> int:
+def count_pta_states(data: list[tuple[tuple[Any, ...], bool]]) -> int:
     root_node = createPTA(data, automaton_type="dfa")
     pta_state_count = 0
     q = deque([root_node])
@@ -54,23 +23,49 @@ def count_pta_states(data: list[tuple[tuple[str, ...], bool]]) -> int:
     return pta_state_count
 
 
-def run_rpni() -> None:
+def measure_rpni_alphabet_dependence() -> None:
     results = []
     for alphabet_size in [2, 4, 8, 16, 32, 64]:
-        data = create_data(alphabet_size=alphabet_size)
-        # save_data_to_file(data, f"rpni_data_{alphabet_size}")
-        pta_state_count = count_pta_states(data=data)
+        average_data_len = 0.0
+        average_pta_state_count = 0.0
+        average_model_state_count = 0.0
+        average_time = 0.0
 
-        rpni = RPNI(data=data, automaton_type="dfa", print_info=False)
+        NUM_OF_RUNS = 10
+        for i in range(NUM_OF_RUNS):
+            print(f"[{i}] Creating data with alphabet size: {alphabet_size}")
+            data = create_rpni_benchmark_data(alphabet_size=alphabet_size)
+            pta_state_count = count_pta_states(data=data)
 
-        start = perf_counter()
-        model: Dfa | None = rpni.run_rpni()
-        end = perf_counter()
+            rpni = RPNI(data=data, automaton_type="dfa", print_info=False)
 
-        if model is None:
-            raise ValueError("Data provided to RPNI is not deterministic. Ensure that the data is deterministic.")
+            print(f"[{i}] Running RPNI with alphabet size: {alphabet_size}")
+            start = perf_counter()
+            model: Dfa | None = rpni.run_rpni()
+            end = perf_counter()
 
-        results.append((alphabet_size, len(data), pta_state_count, len(model.states), end - start))
+            if model is None:
+                raise ValueError("Data provided to RPNI is not deterministic. Ensure that the data is deterministic.")
+
+            average_data_len += len(data)
+            average_pta_state_count += pta_state_count
+            average_model_state_count += len(model.states)
+            average_time += end - start
+
+        average_data_len /= NUM_OF_RUNS
+        average_pta_state_count /= NUM_OF_RUNS
+        average_model_state_count /= NUM_OF_RUNS
+        average_time /= NUM_OF_RUNS
+
+        results.append(
+            (
+                alphabet_size,
+                average_data_len,
+                average_pta_state_count,
+                average_model_state_count,
+                average_time,
+            ),
+        )
 
     headers = ["Alphabet size", "Number of examples", "PTA states", "Number of states", "Time"]
     results_array = tabulate(results, headers=headers, tablefmt="grid")
@@ -78,4 +73,4 @@ def run_rpni() -> None:
 
 
 if __name__ == "__main__":
-    run_rpni()
+    measure_rpni_alphabet_dependence()

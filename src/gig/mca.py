@@ -1,5 +1,7 @@
+import numpy as np
 from automata.base.exceptions import InvalidStateError
 from automata.fa.dfa import DFA
+from numpy._typing import NDArray
 
 
 def construct_mca(s_plus: list[str]) -> DFA:
@@ -55,7 +57,7 @@ def construct_mca(s_plus: list[str]) -> DFA:
     )
 
 
-def reduce_mca(mca_states: list[str], mca: DFA, partition: tuple[int, ...]) -> DFA:
+def reduce_mca(mca_states: list[str], mca: DFA, partition: NDArray[np.int_]) -> DFA:
     mapping = {mca_states[i]: mca_states[group] for i, group in enumerate(partition)}
     new_states = set(mapping.values())
     new_final_states = set()

@@ -1,11 +1,13 @@
 from typing import Callable
 
-from aalpy import Dfa, DfaState, PerfectKnowledgeEqOracle, RandomWalkEqOracle, RegexSUL, run_Lstar, SUL
+from aalpy import Dfa, DfaState, PerfectKnowledgeEqOracle, RegexSUL, run_Lstar, SUL
 from tabulate import tabulate
 
 
-def run_lstar_queries_measure_ex1() -> None:
+def measure_lstar_queries_ex1() -> None:
     def create_dfa(n: int) -> Dfa:
+        """Creates DFA that matches the regex `0{n}[01]*`."""
+
         states = [DfaState(state_id=f"q{i}", is_accepting=False) for i in range(0, n + 2)]
         for i in range(0, n):
             states[i].transitions = {"0": states[i + 1], "1": states[-1]}
@@ -52,22 +54,22 @@ class ExSUL(SUL):
         self.string = ""
         self.is_correct = is_correct
 
-    def pre(self):
+    def pre(self) -> None:
         self.string = ""
-        pass
 
-    def post(self):
+    def post(self) -> None:
         self.string = ""
-        pass
 
-    def step(self, letter):
+    def step(self, letter: str) -> bool:
         if letter is not None:
             self.string += str(letter)
         return True if self.is_correct(self.string) else False
 
 
-def run_lstar_queries_measure_ex2() -> None:
+def measure_lstar_queries_ex2() -> None:
     def create_dfa(n: int) -> Dfa:
+        """Creates DFA that accepts strings that start with `0^n1^n`."""
+
         states = [DfaState(state_id=f"q{i}", is_accepting=False) for i in range(0, 2 * n + 2)]
 
         for i in range(0, n):
@@ -119,5 +121,5 @@ def run_lstar_queries_measure_ex2() -> None:
 
 
 if __name__ == "__main__":
-    run_lstar_queries_measure_ex1()
-    run_lstar_queries_measure_ex2()
+    measure_lstar_queries_ex1()
+    measure_lstar_queries_ex2()
