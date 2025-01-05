@@ -42,7 +42,7 @@ def at_least_one_a() -> tuple[list[str], list[str], list[str], list[str]]:
     return train_pos, train_neg, test_pos, test_neg
 
 
-def one_is_third_from_end() -> tuple[list[str], list[str]]:
+def one_is_third_from_end() -> tuple[list[str], list[str], list[str], list[str]]:
     positive_examples = [
         "100",
         "101",
@@ -75,7 +75,7 @@ def one_is_third_from_end() -> tuple[list[str], list[str]]:
         positive_examples.append(f"{bin_str}110")
         positive_examples.append(f"{bin_str}111")
 
-    return positive_examples, negative_examples
+    return positive_examples, negative_examples, [], []
 
 
 def coin_toss(n: int = 1000, min_len: int = 5, max_len: int = 12, rnd: random.Random | None = None) -> list[str]:

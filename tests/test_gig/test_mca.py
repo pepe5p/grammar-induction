@@ -1,24 +1,22 @@
 import pytest
-from _pytest.fixtures import FixtureRequest
 from automata.fa.dfa import DFA
 
 from data_generation import datasets
-from data_generation.transformations import translate_automata_to_aalpy
 from gig.mca import construct_mca, reduce_mca
 
 
 @pytest.mark.parametrize(
     "dataset",
     [
-        pytest.param((["a", "aaa", "ba", "aaab"], ["aa"]), id="Easy"),
+        pytest.param((["a", "aaa", "ba", "aaab"], ["aa"], [], []), id="Easy"),
         pytest.param(datasets.at_least_one_a(), id="At least one 'a'"),
         pytest.param(datasets.even_number_of_as(), id="Even number of 'a's"),
         pytest.param(datasets.even_number_of_as_or_bs(), id="Even number of 'a's or 'b's"),
         pytest.param(datasets.one_is_third_from_end(), id="One is third from end"),
     ],
 )
-def test_construct_mca(dataset: tuple[list[str], list[str]]) -> None:
-    s_plus, s_minus = dataset
+def test_construct_mca(dataset: tuple[list[str], list[str], list[str], list[str]]) -> None:
+    s_plus, s_minus, _, _ = dataset
     mca = construct_mca(s_plus=s_plus)
     for word in s_plus:
         assert mca.accepts_input(word), f"Does not accept '{word}'"
