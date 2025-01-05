@@ -6,16 +6,20 @@ from aalpy import Automaton, AutomatonSUL, DeterministicAutomaton, Dfa
 from automata.fa.dfa import DFA
 
 
-def even_number_of_as() -> tuple[list[str], list[str]]:
-    positive_examples = ["", "b", "aa", "bb", "aab", "baa", "aba", "abaaa", "baaaa"]
-    negative_examples = ["a", "ab", "ba", "aaa", "aaba", "abb", "ababab"]
-    return positive_examples, negative_examples
+def even_number_of_as() -> tuple[list[str], list[str], list[str], list[str]]:
+    train_pos = ["", "b", "aa", "aab", "bb", "baa", "aba", "abaaa", "baaaa"]
+    train_neg = ["a", "ab", "ba", "aaa", "aaba", "abb", "ababab"]
+    test_pos = ["aaaab", "baba", "abbab", "bbbbbbbb", "aaaabbaaaab", "aaabbbbbbbba", "aabaa", "aabbbaabaa", "abababab"]
+    test_neg = ["aaab", "abbaa", "aaabbb", "bbbbbba", "aaaaaaa", "abbbbaa", "bbbbbaaba", "ababababab"]
+    return train_pos, train_neg, test_pos, test_neg
 
 
-def even_number_of_as_or_bs() -> tuple[list[str], list[str]]:
-    positive_examples = ["", "a", "b", "aa", "bb", "abb", "aab", "baa", "aba", "abaaa", "baaaa"]
-    negative_examples = ["ab", "ba", "aaab", "aaba", "abaa", "baaa", "abbb", "bbba", "ababab"]
-    return positive_examples, negative_examples
+def even_number_of_as_or_bs() -> tuple[list[str], list[str], list[str], list[str]]:
+    train_pos = ["", "a", "b", "aa", "bb", "abb", "aab", "baa", "aba", "abaaa", "baaaa"]
+    train_neg = ["ab", "ba", "aaab", "aaba", "abaa", "baaa", "abbb", "bbba", "ababab"]
+    test_pos = ["aaaabb", "baba", "abbbab", "bbbbbbbb", "aaaabbaabaab", "aaabbbbbbbba", "aabbaa", "aabbaaaa"]
+    test_neg = ["aaab", "abbbaa", "aaabbb", "bbbbbbba", "aaaaaaa", "babbbbaa", "bbbbbaabab", "ababababab"]
+    return train_pos, train_neg, test_pos, test_neg
 
 
 def create_dfa_for_even_number_of_as_or_bs() -> DeterministicAutomaton:
@@ -30,10 +34,12 @@ def create_dfa_for_even_number_of_as_or_bs() -> DeterministicAutomaton:
     return dfa
 
 
-def at_least_one_a() -> tuple[list[str], list[str]]:
-    positive_examples = ["a", "aa", "ab", "ba", "aba", "aab", "baa", "abaaa", "baaaa", "ac"]
-    negative_examples = ["", "b", "bb", "c", "bc", "bbb", "bbb", "bbbc"]
-    return positive_examples, negative_examples
+def at_least_one_a() -> tuple[list[str], list[str], list[str], list[str]]:
+    train_pos = ["a", "aa", "ab", "ba", "aba", "aab", "baa", "abaaa", "baaaa", "ac", "ca", "aca", "cac", "cacac"]
+    train_neg = ["", "b", "bb", "c", "bc", "bbb", "bbb", "bbbc"]
+    test_pos = ["aaaab", "baba", "abbab", "bbbbbbbb", "aaaabbaaaab", "aaabbbbbbbba", "aabaa", "aabbbaabaa", "abababab"]
+    test_neg = ["bbbbb", "bbbbc", "ccccb", "bcbcbcb", "bbbbcc", "ccbcbcb", "bcbcbcbbc", "bcc", "bbbcbb"]
+    return train_pos, train_neg, test_pos, test_neg
 
 
 def one_is_third_from_end() -> tuple[list[str], list[str]]:
@@ -153,7 +159,9 @@ def a_and_b_alternately(
 
 
 def measure_a_and_b_alternately_solution_quality(
-    automaton: Automaton, attempts: int = 1000, rnd: random.Random | None = None
+    automaton: Automaton,
+    attempts: int = 1000,
+    rnd: random.Random | None = None,
 ) -> float:
     """Measures the quality of the learned automaton by checking sentences it generates."""
 

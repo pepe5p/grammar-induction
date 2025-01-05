@@ -31,7 +31,7 @@ def measure_rpni_alphabet_dependence() -> None:
         average_model_state_count = 0.0
         average_time = 0.0
 
-        NUM_OF_RUNS = 10
+        NUM_OF_RUNS = 50
         for i in range(NUM_OF_RUNS):
             print(f"[{i}] Creating data with alphabet size: {alphabet_size}")
             data = create_rpni_benchmark_data(alphabet_size=alphabet_size)

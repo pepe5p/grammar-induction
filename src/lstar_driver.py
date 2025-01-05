@@ -68,7 +68,7 @@ class ExSUL(SUL):
 
 def measure_lstar_queries_ex2() -> None:
     def create_dfa(n: int) -> Dfa:
-        """Creates DFA that accepts strings that start with `0^n1^n`."""
+        """Creates DFA that accepts strings that start with `0^m1^m` for m in {1, 2, ..., n}."""
 
         states = [DfaState(state_id=f"q{i}", is_accepting=False) for i in range(0, 2 * n + 2)]
 

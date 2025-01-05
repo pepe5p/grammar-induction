@@ -34,7 +34,7 @@ def add_noise(
     noise_percentage: float,
     rnd: Random | None = None,
 ) -> list[str]:
-    """Swaps random noise_percentage of positive examples with negative examples"""
+    """Adds random noise_percentage to positive examples."""
 
     if noise_percentage < 0 or noise_percentage > 1:
         raise ValueError("Noise percentage must be between 0 and 1")
@@ -45,8 +45,8 @@ def add_noise(
     positive = positive.copy()
     n = int(len(positive) * noise_percentage)
     for _ in range(n):
-        idx = rnd.randint(0, len(positive) - 1)
-        positive[idx] = negative[rnd.randint(0, len(negative) - 1)]
+        new_noise = negative[rnd.randint(0, len(negative) - 1)]
+        positive.append(new_noise)
 
     return positive
 
