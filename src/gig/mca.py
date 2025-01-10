@@ -5,26 +5,22 @@ from numpy._typing import NDArray
 
 
 def construct_mca(s_plus: list[str]) -> DFA:
-    # Step 1: Build the set of all unique prefixes from S+
     states = set()
     transitions: dict[str, dict[str, str]] = {}
     final_states = set()
     alphabet = set()
 
-    # Extract all prefixes and the alphabet
     for word in s_plus:
         prefix = ""
         for symbol in word:
             alphabet.add(symbol)
             prefix += symbol
             states.add(prefix)
-        final_states.add(prefix)  # Mark the last prefix as a final state
+        final_states.add(prefix)
 
-    # Add the empty prefix (initial state)
     initial_state = ""
     states.add(initial_state)
 
-    # Step 2: Define transitions based on prefix relationships
     for word in s_plus:
         current_state = initial_state
         for symbol in word:
@@ -32,7 +28,6 @@ def construct_mca(s_plus: list[str]) -> DFA:
             transitions.setdefault(current_state, {})[symbol] = next_state
             current_state = next_state
 
-    # Ensure all states have transitions (optional for completeness)
     for state in states:
         for symbol in alphabet:
             if state not in transitions:
@@ -40,14 +35,6 @@ def construct_mca(s_plus: list[str]) -> DFA:
             if symbol not in transitions[state]:
                 transitions[state][symbol] = state
 
-    # print(f"States: {states}")
-    # print(f"Alphabet: {alphabet}")
-    # print(f"Transitions: {transitions}")
-    # print(f"Initial State: {initial_state}")
-    # print(f"Final States: {final_states}")
-    # raise RuntimeError("Stop here")
-
-    # Step 3: Return the DFA
     return DFA(
         states=states,
         input_symbols=alphabet,

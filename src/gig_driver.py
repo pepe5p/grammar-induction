@@ -88,8 +88,6 @@ def benchmark_gig_initial_population(
                 parent_selection_type="rws",
                 keep_elitism=2,
                 stop_criteria=["saturate_50", "reach_4000"],
-                # parallel_processing=("thread", 1),
-                # random_seed=42,
             )
 
             print(f"[{i}] Running GIG with initial population function: {initial_population_func.__name__}")
@@ -174,8 +172,8 @@ def calculate_data_points(automaton: DFA, s_plus: list[str], s_minus: list[str])
 
 if __name__ == "__main__":
     for data_func in [
-        # datasets.at_least_one_a,
-        # datasets.even_number_of_as,
+        datasets.at_least_one_a,
+        datasets.even_number_of_as,
         datasets.even_number_of_as_or_bs,
     ]:
         print(f"Running benchmark for data: {data_func.__name__}")

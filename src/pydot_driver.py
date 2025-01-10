@@ -1,5 +1,3 @@
-from math import log, sqrt
-
 import numpy as np
 import pydot
 from aalpy.learning_algs.stochastic_passive.CompatibilityChecker import HoeffdingCompatibility
@@ -10,8 +8,6 @@ def save_rpni_run_example() -> None:
 
     positive_examples = ["a", "aa", "ab", "ba", "aba", "aab", "baa", "abaaa", "baaaa", "ac"]
     graph = construct_pta(s_plus=positive_examples)
-    # graph.write(path=f"data/pydot/{file_name}.dot", format="raw")
-    # graph = pydot.graph_from_dot_file("data/pydot/pta00.dot")[0]
     graph.write(path=path.format("0"), format="png")
 
     graph = merge_states(graph, "q1", "q2")
@@ -44,16 +40,13 @@ def save_rpni_run_example() -> None:
 
 
 def construct_pta(s_plus: list[str]) -> pydot.Dot:
-    # Tworzenie grafu skierowanego
     graph = pydot.Dot(graph_type="digraph", rankdir="LR")
 
-    # Dodanie stanu początkowego
     graph.add_node(pydot.Node("q0", label="q0", shape="circle"))
     invisible_node = pydot.Node("__start__", shape="none", width=0, height=0, label="")
     graph.add_node(invisible_node)
     graph.add_edge(pydot.Edge("__start__", "q0", label=""))
 
-    # Słownik do śledzenia istniejących przejść i stanów
     transitions: dict[str, dict[str, str]] = {"q0": {}}
     state_counter = 1
 
@@ -61,25 +54,19 @@ def construct_pta(s_plus: list[str]) -> pydot.Dot:
         current_state = "q0"
         for symbol in word:
             if symbol not in transitions[current_state]:
-                # Tworzenie nowego stanu
                 new_state = f"q{state_counter}"
                 graph.add_node(pydot.Node(new_state, label=new_state, shape="circle"))
-                # Dodanie przejścia
                 graph.add_edge(pydot.Edge(current_state, new_state, label=symbol))
-                # Aktualizacja słownika przejść
                 transitions[current_state][symbol] = new_state
                 transitions[new_state] = {}
                 state_counter += 1
-            # Przejście do nowego stanu
             current_state = transitions[current_state][symbol]
-        # Oznacz ostatni stan jako akceptujący (podwójny okrąg)
         graph.get_node(current_state)[0].set_shape("doublecircle")
 
     return graph
 
 
 def merge_states(graph: pydot.Dot, state1: str, state2: str) -> pydot.Dot:
-    # Determine if either state1 or state2 is a final (accepting) state
     node1 = graph.get_node(state1)
     node2 = graph.get_node(state2)
     if node1 and "doublecircle" in node1[0].get_shape():
@@ -89,10 +76,8 @@ def merge_states(graph: pydot.Dot, state1: str, state2: str) -> pydot.Dot:
     else:
         is_final = False
 
-    # Update the shape of state1 to reflect final status if needed
     graph.get_node(state1)[0].set_shape("doublecircle" if is_final else "ellipse")
 
-    # Collect new edges, avoiding duplicates
     existing_edges = {(edge.get_source(), edge.get_destination(), edge.get_label()) for edge in graph.get_edges()}
     new_edges = set()
     for edge in graph.get_edges():
@@ -100,23 +85,18 @@ def merge_states(graph: pydot.Dot, state1: str, state2: str) -> pydot.Dot:
         dst = edge.get_destination()
         label = edge.get_label()
 
-        # Redirect edges targeting state2 to state1
         if dst == state2:
             new_edges.add((src, state1, label))
 
-        # Redirect edges originating from state2 to state1
         if src == state2:
             new_edges.add((state1, dst, label))
 
-    # Add the new edges, ensuring no duplicates
     for src, dst, label in new_edges:
         if (src, dst, label) not in existing_edges:
             graph.add_edge(pydot.Edge(src, dst, label=label))
 
-    # Remove state2
     graph.del_node(state2)
 
-    # Remove old edges connected to state2
     edges_to_remove = [
         edge for edge in graph.get_edges() if edge.get_source() == state2 or edge.get_destination() == state2
     ]
@@ -127,7 +107,6 @@ def merge_states(graph: pydot.Dot, state1: str, state2: str) -> pydot.Dot:
 
 
 def save_alergia_run_example() -> None:
-    # [H, H, T, HH, HT, TH, TT, HHH]
     path = "data/run_example/alergia/{}.png"
 
     graph = create_empty_pta()
@@ -237,12 +216,7 @@ def print_alergia() -> None:
 
 
 if __name__ == "__main__":
-    n1 = 5
-    n2 = 3
-    eps = 1.65
-    bound = (sqrt(1 / n1) + sqrt(1 / n2)) * sqrt(0.5 * log(2 / eps))
-    print(bound)
-
     # save_rpni_run_example()
     # save_alergia_run_example()
     # print_alergia()
+    pass

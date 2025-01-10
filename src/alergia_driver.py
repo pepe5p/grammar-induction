@@ -83,5 +83,5 @@ def save_a_and_b_alternately_dataset(
 
 
 if __name__ == "__main__":
-    # datasets.save_a_and_b_alternately_dataset(size=100000)
+    save_a_and_b_alternately_dataset(size=100000)
     measure_alergia_noise_resistance()
